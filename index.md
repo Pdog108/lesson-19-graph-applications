@@ -214,27 +214,27 @@ Additionally, some flights conflict with other flights. Given the list of pilots
 the airport wants a simple algorithm to tell them if they have enough pilots to fly each plane.
 > **Formal Description**:
 >  * Input: An undirected, unweighted graph. Each vertex either represents a pilot or a flight. Each edge connects
->  * a pilot to a flight that conflicts with their schedule (one that they can not pilot) or two flights that conflict.
->  * 
+>  a pilot to a flight that conflicts with their schedule (one that they can not pilot) or two flights that conflict.
+> 
 >  * Output: A printed output, saying either "The graph is bipartite. 
->  * There are enough pilots to fly each flight without conflict" if the graph is bipartite or "The graph is not
->  * bipartite. More "More pilots are needed or modifications need to be made to their schedules." if the graph is not 
->  * bipartite
->  * 
->  * The methodology behind determining if the available pilots can fly every available flight revolves around 
->  * determining if the input graph, which contains all flights (vertex), pilots (vertex), and conflicts (edge), is
->  * bipartite, meaning that edges only connect pilots to flights, and not pilots to pilots or flights to flights. If
->  * the graph is bipartite, this tells us that it is possible to assign the pilots to the flights in a way that avoids 
->  * any conflicts. This is because the bipartite structure implies that there are no conflicts between pilots or 
->  * between flights, and therefore any conflict can only occur between a pilot and a flight. In other words, if the 
->  * graph is bipartite, it means that it is possible to schedule all the flights without any pilot having a conflict 
->  * with their schedule, assuming that each flight requires a single pilot. This is accomplished by utilizing the 
->  * built-in networkx function is_bipartite(), which takes a graph as an input and returns a boolean representing if 
->  * the graph is bipartite or not. is_bipartite's source code  is based on BFS. It starts by arbitrarily selecting a 
->  * node and assigning it to one of the two groups. It then adds all the neighbors of that node to group B. It then 
->  * continues the process, alternately adding nodes to group A and group B, until all nodes have been assigned a group. 
->  * At each step of the process, the algorithm checks whether there are any edges connecting nodes in the same group. 
->  * If any such edges are found, the graph is not bipartite. Otherwise, the graph is bipartite.
+>  There are enough pilots to fly each flight without conflict" if the graph is bipartite or "The graph is not
+>  bipartite. More pilots are needed or modifications need to be made to their schedules." if the graph is not 
+>  bipartite
+>
+>   The methodology behind determining if the available pilots can fly every available flight revolves around 
+> determining if the input graph, which contains all flights (vertex), pilots (vertex), and conflicts (edge), is
+> bipartite, meaning that edges only connect pilots to flights, and not pilots to pilots or flights to flights. If
+> the graph is bipartite, this tells us that it is possible to assign the pilots to the flights in a way that avoids 
+> any conflicts. This is because the bipartite structure implies that there are no conflicts between pilots or 
+> between flights, and therefore any conflict can only occur between a pilot and a flight. In other words, if the 
+> graph is bipartite, it means that it is possible to schedule all the flights without any pilot having a conflict 
+> with their schedule, assuming that each flight requires a single pilot. This is accomplished by utilizing the 
+> built-in networkx function is_bipartite(), which takes a graph as an input and returns a boolean representing if 
+> the graph is bipartite or not. is_bipartite's source code  is based on BFS. It starts by arbitrarily selecting a 
+> node and assigning it to one of the two groups. It then adds all the neighbors of that node to group B. It then 
+> continues the process, alternately adding nodes to group A and group B, until all nodes have been assigned a group. 
+> At each step of the process, the algorithm checks whether there are any edges connecting nodes in the same group. 
+> If any such edges are found, the graph is not bipartite. Otherwise, the graph is bipartite.
 
 **Graph Problem/Algorithm**: [BFS]
 
