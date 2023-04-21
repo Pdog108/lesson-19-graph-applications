@@ -56,7 +56,9 @@ def main():
     # print("Compute shortest paths in the graph: ", nx.shortest_path(G, "Smith Hall", weight="cost"))
     routes = nx.shortest_path(G, "Smith Hall", weight="cost")
     for key in routes:
-        print("The shortest path from Smith Hall to", key, ":", routes[key])
+        distance = nx.shortest_path_length(G, "Smith Hall", key, weight="cost")
+        print("The shortest path from Smith Hall to", key, ":", routes[key], "with the distance of", distance, "meters")
+        # print("\n")
 
 
 main()
