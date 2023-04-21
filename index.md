@@ -40,7 +40,7 @@ import networkx as nx
 
 **Visualization**:
 
-![Image goes here](Relative image filename goes here)
+![Image goes here](Campus_Map.png)
 
 **Solution code:**
 
