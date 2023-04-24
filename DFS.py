@@ -1,51 +1,5 @@
 import networkx as nx
-
 import matplotlib.pyplot as plt
-
-Flights = {
-    "NY,NJ": ["4"],
-    "NY,RI": ["7"],
-    "NJ,CT": ["6"],
-    "RI,CT": ["1"],
-    "CT,PA": ["10"],
-    "RI,PA": ["5"],
-    "FL,TX": ["14"],
-    "FL,OK": ["8"],
-    "OK,TX": ["4"],
-    "TX,KY": ["5"],
-    "KY,MN": ["4"],
-    "MN,IL": ["6"],
-    "MN,OH":["8"],
-    "IL,OH": ["1"], 
-    "CT,VA":["7"],
-    "KY,LO":["4"],
-    "LO,AK":["3"],
-    "LO,MS":["5"],
-    "MS,AK":["1"],
-    "NJ,ME":["6"],
-    "NY,NH":["3"],
-    "TX,CO":["8"],
-    "TN,AK":["10"],
-    "NH,TX": ["45"],
-    "RI,MS":["16"],
-    "ME,FL":["20"],
-    "OK,MS":["5"],
-    "IL,TN":["50"],
-    "OH,CO":["60"],
-    "AK,PA": ["55"]
-}
-
-# Create an undirected graph
-G = nx.Graph()
-
-#Add the edges to the graph
-G.add_nodes_from(Flights)
-
-# Draw the Graph
-pos = nx.spring_layout(G)
-nx.draw(G, pos)
-print(G)
-plt.show()
 
 '''
 Function: DFS (Depth-First-Search)
@@ -62,7 +16,7 @@ def flightsDFS(graph, start, end, visited=None, path=None):
         visited = set()
     # If path is none, then set path to a list containing only the starting vertex
     if path is None:
-        path = [start]
+        path = [start, 0]
     # If the starting vertex is equal to the "goal" vertex, then return the path
     if start == end:
         return path
@@ -73,9 +27,74 @@ def flightsDFS(graph, start, end, visited=None, path=None):
         if vertex not in visited:
             # Create a new copy of the path list
             new_path = list(path)
-            # Add the vertex to the new path list
-            new_path.append(vertex)
+            # Add the weight of the edge to the new path list
+            new_path.append(graph[start][vertex])
             dfs_result = flightsDFS(graph, vertex, end, visited, new_path)
             if dfs_result is not None:
                 return dfs_result
     return None
+
+
+Flights = {
+    "NY": {"NJ": 4, "RI": 7, "NH": 3},
+    "ME": {"NY": 3, "RI": 1, "OH": 7},
+    "NJ": {"NY": 4, "CT": 6, "ME": 6},
+    "RI": {"NY": 7, "CT": 1, "PA": 5, "MS": 16},
+    "CT": {"NJ": 6, "RI": 1, "PA": 10, "VA": 7},
+    "PA": {"RI": 5, "CT": 10, "AK": 55},
+    "FL": {"TX": 14, "OK": 8},
+    "CO": {"OH": 4, "PA": 8, "MS": 5},
+    "TX": {"FL": 14, "OK": 4, "KY": 5, "CO": 8},
+    "OK": {"FL": 8, "TX": 4, "MS": 5},
+    "KY": {"TX": 5, "MN": 4, "LA": 4},
+    "MN": {"KY": 4, "IL": 6, "OH": 8},
+    "IL": {"MN": 6, "OH": 1, "TN": 50},
+    "OH": {"MN": 8, "IL": 1, "CO": 60},
+    "VA": {"CT": 7},
+    "LA": {"KY": 4, "AK": 3, "MS": 5},
+    "MS": {"RI": 16, "OK": 5, "LA": 5, "AK": 1},
+    "AK": {"PA": 55, "TN": 10, "MS": 1},
+    "TN": {"RI": 45, "KY": 5},
+    "NH": {"NY": 3}
+}
+
+start = "NY"
+end = "NH"
+path = flightsDFS(Flights, start, end)
+
+
+if path is not None:
+    print(" -> ".join(str(path)))
+
+# Create an undirected graph
+G = nx.DiGraph(Flights)
+
+
+# Draw the Graph
+pos = nx.spring_layout(G, seed = 11, k = 2)
+nx.draw_networkx(G, 
+        pos, 
+        node_color='#0091e6', 
+        node_size=300,
+        font_size=7,
+        font_color='white',
+        edge_color='black',
+        font_weight='bold',
+        width=3,
+        with_labels=True)
+
+nx.draw_networkx_edge_labels(G, pos, 
+        label_pos=0.5, 
+        font_size=4, 
+        font_color='k', 
+        font_family='sans-serif',
+        font_weight='bold', 
+        horizontalalignment='center', 
+        verticalalignment="bottom",
+        rotate=True, 
+        clip_on=True)
+
+
+plt.axis("off")
+plt.savefig("DFS_graph.png")
+plt.show()
