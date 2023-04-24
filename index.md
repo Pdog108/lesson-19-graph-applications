@@ -43,8 +43,8 @@ Campus.csv contains information about how far different neighbor buildings are f
 
 **Setup code**:
 
-import matplotlib.pyplot as plt 
-import networkx as nx
+    import matplotlib.pyplot as plt 
+    import networkx as nx
 
     with open("Campus.csv") as data_file:
         lines = data_file.readlines()
@@ -96,36 +96,36 @@ import networkx as nx
 
 **Output**
 
-The shortest path from Smith Hall to Smith Hall : ['Smith Hall'] with the distance of 0 meters
-The shortest path from Smith Hall to Ewing Hall : ['Smith Hall', 'Ewing Hall'] with the distance of 53.0 meters
-The shortest path from Smith Hall to Kirkbride Lecture Hall : ['Smith Hall', 'Kirkbride Lecture Hall'] with the distance of 26.0 meters
-The shortest path from Smith Hall to Purnell Hall : ['Smith Hall', 'Purnell Hall'] with the distance of 77.0 meters
-The shortest path from Smith Hall to Gore Hall : ['Smith Hall', 'Gore Hall'] with the distance of 38.0 meters
-The shortest path from Smith Hall to Sharp Lab : ['Smith Hall', 'Gore Hall', 'Sharp Lab'] with the distance of 77.0 meters
-The shortest path from Smith Hall to Mitchell Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall'] with the distance of 65.0 meters
-The shortest path from Smith Hall to Du Pont Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall'] with the distance of 94.0 meters
-The shortest path from Smith Hall to Hullihen Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall'] with the distance of 137.0 meters
-The shortest path from Smith Hall to Alfred Lerner Hall : ['Smith Hall', 'Purnell Hall', 'Alfred Lerner Hall'] with the distance of 132.0 meters
-The shortest path from Smith Hall to Amy du Pont Music Building : ['Smith Hall', 'Purnell Hall', 'Amy du Pont Music Building'] with the distance of 157.0 meters
-The shortest path from Smith Hall to Wolf Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Wolf Hall'] with the distance of 112.0 meters
-The shortest path from Smith Hall to Evans Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Evans Hall'] with the distance of 110.0 meters
-The shortest path from Smith Hall to Spencer Lab : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab'] with the distance of 174.0 meters
-The shortest path from Smith Hall to Life Sciences Research Facility : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Life Sciences Research Facility'] with the distance of 229.0 meters
-The shortest path from Smith Hall to Memorial Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Memorial Hall'] with the distance of 182.0 meters
-The shortest path from Smith Hall to Brown Lab : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Brown Lab'] with the distance of 181.0 meters   
-The shortest path from Smith Hall to Roselle Center for the Arts : ['Smith Hall', 'Purnell Hall', 'Amy du Pont Music Building', 'Roselle Center for the Arts'] with the distance of 236.0 meters
-The shortest path from Smith Hall to East Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'East Hall'] with the distance of 233.0 meters      
-The shortest path from Smith Hall to Colburn Lab : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Colburn Lab'] with the distance of 197.0 meters  
-The shortest path from Smith Hall to Graham Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Graham Hall'] with the distance of 232.0 meters  
-The shortest path from Smith Hall to Lammot du Pont Lab : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Brown Lab', 'Lammot du Pont Lab'] with the distance of 190.0 meters
-The shortest path from Smith Hall to Drake Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Brown Lab', 'Drake Hall'] with the distance of 215.0 meters
-The shortest path from Smith Hall to Morris Library : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Memorial Hall', 'Morris Library'] with the distance of 302.0 meters
-The shortest path from Smith Hall to Pearson Lab : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Colburn Lab', 'Pearson Lab'] with the distance of 239.0 meters
-
-
+    The shortest path from Smith Hall to Smith Hall : ['Smith Hall'] with the distance of 0 meters
+    The shortest path from Smith Hall to Ewing Hall : ['Smith Hall', 'Ewing Hall'] with the distance of 53.0 meters
+    The shortest path from Smith Hall to Kirkbride Lecture Hall : ['Smith Hall', 'Kirkbride Lecture Hall'] with the distance of 26.0 meters
+    The shortest path from Smith Hall to Purnell Hall : ['Smith Hall', 'Purnell Hall'] with the distance of 77.0 meters
+    The shortest path from Smith Hall to Gore Hall : ['Smith Hall', 'Gore Hall'] with the distance of 38.0 meters
+    The shortest path from Smith Hall to Sharp Lab : ['Smith Hall', 'Gore Hall', 'Sharp Lab'] with the distance of 77.0 meters
+    The shortest path from Smith Hall to Mitchell Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall'] with the distance of 65.0 meters
+    The shortest path from Smith Hall to Du Pont Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall'] with the distance of 94.0 meters
+    The shortest path from Smith Hall to Hullihen Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall'] with the distance of 137.0 meters
+    The shortest path from Smith Hall to Alfred Lerner Hall : ['Smith Hall', 'Purnell Hall', 'Alfred Lerner Hall'] with the distance of 132.0 meters
+    The shortest path from Smith Hall to Amy du Pont Music Building : ['Smith Hall', 'Purnell Hall', 'Amy du Pont Music Building'] with the distance of 157.0 meters
+    The shortest path from Smith Hall to Wolf Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Wolf Hall'] with the distance of 112.0 meters
+    The shortest path from Smith Hall to Evans Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Evans Hall'] with the distance of 110.0 meters
+    The shortest path from Smith Hall to Spencer Lab : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab'] with the distance of 174.0 meters
+    The shortest path from Smith Hall to Life Sciences Research Facility : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Life Sciences Research Facility'] with the distance of 229.0 meters
+    The shortest path from Smith Hall to Memorial Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Memorial Hall'] with the distance of 182.0 meters
+    The shortest path from Smith Hall to Brown Lab : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Brown Lab'] with the distance of 181.0 meters   
+    The shortest path from Smith Hall to Roselle Center for the Arts : ['Smith Hall', 'Purnell Hall', 'Amy du Pont Music Building', 'Roselle Center for the Arts'] with the distance of 236.0 meters
+    The shortest path from Smith Hall to East Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'East Hall'] with the distance of 233.0 meters      
+    The shortest path from Smith Hall to Colburn Lab : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Colburn Lab'] with the distance of 197.0 meters  
+    The shortest path from Smith Hall to Graham Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Graham Hall'] with the distance of 232.0 meters  
+    The shortest path from Smith Hall to Lammot du Pont Lab : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Brown Lab', 'Lammot du Pont Lab'] with the distance of 190.0 meters
+    The shortest path from Smith Hall to Drake Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Brown Lab', 'Drake Hall'] with the distance of 215.0 meters
+    The shortest path from Smith Hall to Morris Library : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Memorial Hall', 'Morris Library'] with the distance of 302.0 meters
+    The shortest path from Smith Hall to Pearson Lab : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Colburn Lab', 'Pearson Lab'] with the distance of 239.0 meters
 
 **Interpretation of Results**:
+
     The program prints the shortest path for each node in the graph in the format "The shortest path from Smith Hall to [node]: [path]", where [node] is the name of the destination node and [path] is a list of nodes representing the shortest path from "Smith Hall" to the destination node.
+
 
 # Minimum Distance Path (Kruskals)
 
