@@ -1,4 +1,5 @@
 import networkx as nx
+
 import matplotlib.pyplot as plt
 
 Flights = {
@@ -41,7 +42,9 @@ G = nx.Graph()
 G.add_nodes_from(Flights)
 
 # Draw the Graph
-pos = nx.spring_layout(G, with_labels = True)
+pos = nx.spring_layout(G)
+nx.draw(G, pos)
+print(G)
 plt.show()
 
 '''
