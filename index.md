@@ -46,13 +46,6 @@ Campus.csv contains information about how far different neighbor buildings are f
 import matplotlib.pyplot as plt 
 import networkx as nx
 
-**Visualization**:
-
-![Image goes here](Campus_Map.png)
-
-**Solution code:**
-
-def main():
     with open("Campus.csv") as data_file:
         lines = data_file.readlines()
 
@@ -89,14 +82,17 @@ def main():
     
     plt.show()
 
+**Visualization**:
+
+![Image goes here](Campus_Map.png)
+
+**Solution code:**
+
     routes = nx.shortest_path(G, "Smith Hall", weight="cost")
     for key in routes:
         distance = nx.shortest_path_length(G, "Smith Hall", key, weight="cost")
         print("The shortest path from Smith Hall to", key, ":", routes[key], "with the distance of", distance, "meters")
         # print("\n")
-
-
-main()
 
 **Output**
 
