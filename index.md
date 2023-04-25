@@ -14,45 +14,118 @@ Description of project
 
 ```sh
 $> pip install networkx
+$> pip install matplotlib
 ```
 
 ## Python Environment Setup
 
 ```python
 import networkx as nx
+import matplotlib.pyplot as plt
 ```
 
 # First Problem Title
 
 **Informal Description**: 
+Campus.csv contains information about how far different neighbor buildings are from each other on a college campus. It then uses this information to draw a campus map, with buildings shown as circles and paths between them shown as lines. The map is color-coded to make it easier to read. The code then figures out the shortest way to get from one building to any other building on the map, and prints out those directions so that people can find the quickest route from Computer Department Headquarters, Smith Hall, to their destination.
 
 > **Formal Description**:
->  * Input:
->  * Output:
+>  * Input: Campus.csv
+            The input of the program is a file named "Campus.csv" which contains a list of edges with their corresponding weights. Each line in the file represents an edge, and the format of each line is "start, end, weight". For example, "Smith Hall,Ewing Hall,53" represents an edge from "Smith Hall" to "Ewing Hall" with a weight of 53.
+>  * Output: 
+            The output of the program is the shortest path from the starting node "Smith Hall" to all other nodes in the graph, where the shortest path is defined as the path with the minimum total weight.
+            Additionally, the program displays a visualization of the graph using the networkx and matplotlib libraries, which shows the nodes and edges of the graph, as well as their corresponding weights.
+
 
 **Graph Problem/Algorithm**: [SSSP(Djikstras)]
 
 
+
 **Setup code**:
 
-```python
-```
+    import matplotlib.pyplot as plt 
+    import networkx as nx
+
+    with open("Campus.csv") as data_file:
+        lines = data_file.readlines()
+
+    G=nx.Graph()
+
+    for line in lines:
+        start, end, weight = line.strip("\n").split(",")
+        weight=float(weight)
+        G.add_edge(start, end, cost=weight)
+
+    pos = nx.spring_layout(G)
+    nx.draw_networkx(G, pos, node_color="orange", node_size=300,
+                     font_size=8,
+                     font_color="black",
+                     edge_color="blue",
+                     width=1,
+                     with_labels=True)
+    
+    nx.draw_networkx_edges(G, pos, edge_color="blue",
+        style="solid", 
+        width=1)
+
+    distance = nx.get_edge_attributes(G,"cost")
+
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=distance,
+        label_pos=0.5, 
+        font_size=7,
+        font_color="red",
+        font_weight="normal",
+        horizontalalignment="center", 
+        verticalalignment="top",
+        rotate=True, 
+        clip_on=True)
+    
+    plt.show()
 
 **Visualization**:
 
-![Image goes here](Relative image filename goes here)
+![Image goes here](Campus_Map.png)
 
 **Solution code:**
 
-```python
-```
+    routes = nx.shortest_path(G, "Smith Hall", weight="cost")
+    for key in routes:
+        distance = nx.shortest_path_length(G, "Smith Hall", key, weight="cost")
+        print("The shortest path from Smith Hall to", key, ":", routes[key], "with the distance of", distance, "meters")
+        # print("\n")
 
 **Output**
 
-```
-```
+    The shortest path from Smith Hall to Smith Hall : ['Smith Hall'] with the distance of 0 meters
+    The shortest path from Smith Hall to Ewing Hall : ['Smith Hall', 'Ewing Hall'] with the distance of 53.0 meters
+    The shortest path from Smith Hall to Kirkbride Lecture Hall : ['Smith Hall', 'Kirkbride Lecture Hall'] with the distance of 26.0 meters
+    The shortest path from Smith Hall to Purnell Hall : ['Smith Hall', 'Purnell Hall'] with the distance of 77.0 meters
+    The shortest path from Smith Hall to Gore Hall : ['Smith Hall', 'Gore Hall'] with the distance of 38.0 meters
+    The shortest path from Smith Hall to Sharp Lab : ['Smith Hall', 'Gore Hall', 'Sharp Lab'] with the distance of 77.0 meters
+    The shortest path from Smith Hall to Mitchell Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall'] with the distance of 65.0 meters
+    The shortest path from Smith Hall to Du Pont Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall'] with the distance of 94.0 meters
+    The shortest path from Smith Hall to Hullihen Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall'] with the distance of 137.0 meters
+    The shortest path from Smith Hall to Alfred Lerner Hall : ['Smith Hall', 'Purnell Hall', 'Alfred Lerner Hall'] with the distance of 132.0 meters
+    The shortest path from Smith Hall to Amy du Pont Music Building : ['Smith Hall', 'Purnell Hall', 'Amy du Pont Music Building'] with the distance of 157.0 meters
+    The shortest path from Smith Hall to Wolf Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Wolf Hall'] with the distance of 112.0 meters
+    The shortest path from Smith Hall to Evans Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Evans Hall'] with the distance of 110.0 meters
+    The shortest path from Smith Hall to Spencer Lab : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab'] with the distance of 174.0 meters
+    The shortest path from Smith Hall to Life Sciences Research Facility : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Life Sciences Research Facility'] with the distance of 229.0 meters
+    The shortest path from Smith Hall to Memorial Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Memorial Hall'] with the distance of 182.0 meters
+    The shortest path from Smith Hall to Brown Lab : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Brown Lab'] with the distance of 181.0 meters   
+    The shortest path from Smith Hall to Roselle Center for the Arts : ['Smith Hall', 'Purnell Hall', 'Amy du Pont Music Building', 'Roselle Center for the Arts'] with the distance of 236.0 meters
+    The shortest path from Smith Hall to East Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'East Hall'] with the distance of 233.0 meters      
+    The shortest path from Smith Hall to Colburn Lab : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Colburn Lab'] with the distance of 197.0 meters  
+    The shortest path from Smith Hall to Graham Hall : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Graham Hall'] with the distance of 232.0 meters  
+    The shortest path from Smith Hall to Lammot du Pont Lab : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Brown Lab', 'Lammot du Pont Lab'] with the distance of 190.0 meters
+    The shortest path from Smith Hall to Drake Hall : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Brown Lab', 'Drake Hall'] with the distance of 215.0 meters
+    The shortest path from Smith Hall to Morris Library : ['Smith Hall', 'Gore Hall', 'Mitchell Hall', 'Hullihen Hall', 'Memorial Hall', 'Morris Library'] with the distance of 302.0 meters
+    The shortest path from Smith Hall to Pearson Lab : ['Smith Hall', 'Gore Hall', 'Du Pont Hall', 'Spencer Lab', 'Colburn Lab', 'Pearson Lab'] with the distance of 239.0 meters
 
 **Interpretation of Results**:
+
+    The program prints the shortest path for each node in the graph in the format "The shortest path from Smith Hall to [node]: [path]", where [node] is the name of the destination node and [path] is a list of nodes representing the shortest path from "Smith Hall" to the destination node.
+
 
 # Minimum Distance Path (Kruskals)
 
@@ -205,37 +278,145 @@ main()
 
 **Interpretation of Results**: These results tell the traveler the path that connects all states' airports in the least distance covered. This can be useful for anyone who is looking to travel to multiple destinations, and wants to be time efficient in doing so. A minimum spanning tree can also be a helpful visual for airlines when choosing optimal routes to fly.
 
-# Third Problem Title
+# Determining if there are enough pilots to fly every flight (Breadth First Search)
 
 **Informal Description**: 
-
+The airport has a list of available pilots and a list of flights in need of a pilot. The problem is that each pilot has 
+certain flights that conflict with their schedule or location, meaning that they are not able to pilot these flights.
+Additionally, some flights conflict with other flights. Given the list of pilots, flights, and conflicts per flight, 
+the airport wants a simple algorithm to tell them if they have enough pilots to fly each plane.
 > **Formal Description**:
->  * Input:
->  * Output:
+>  * Input: An undirected, unweighted graph. Each vertex either represents a pilot or a flight. Each edge connects
+ a pilot to a flight that conflicts with their schedule (one that they can not pilot) or two flights that conflict.
 
-**Graph Problem/Algorithm**: [DFS]
+>  * Output: A printed output, saying either "The graph is bipartite. 
+ There are enough pilots to fly each flight without conflict" if the graph is bipartite or "The graph is not
+ bipartite. More pilots are needed or modifications need to be made to their schedules." if the graph is not 
+ bipartite
+
+   The methodology behind determining if the available pilots can fly every available flight revolves around 
+determining if the input graph, which contains all flights (vertex), pilots (vertex), and conflicts (edge), is 
+   bipartite, meaning that edges only connect pilots to flights, and not pilots to pilots or flights to flights. If
+the graph is bipartite, this tells us that it is possible to assign the pilots to the flights in a way that avoids 
+any conflicts. This is because the bipartite structure implies that there are no conflicts between pilots or 
+between flights, and therefore any conflict can only occur between a pilot and a flight. In other words, if the 
+graph is bipartite, it means that it is possible to schedule all the flights without any pilot having a conflict 
+with their schedule, assuming that each flight requires a single pilot. This is accomplished by utilizing the 
+built-in networkx function is_bipartite(), which takes a graph as an input and returns a boolean representing if 
+the graph is bipartite or not. is_bipartite's source code  is based on BFS. It starts by arbitrarily selecting a 
+node and assigning it to one of the two groups. It then adds all the neighbors of that node to group B. It then 
+continues the process, alternately adding nodes to group A and group B, until all nodes have been assigned a group. 
+At each step of the process, the algorithm checks whether there are any edges connecting nodes in the same group. 
+If any such edges are found, the graph is not bipartite. Otherwise, the graph is bipartite.
+
+**Graph Problem/Algorithm**: [BFS]
 
 
 **Setup code**:
 
-```python
+```
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# create a new undirected graph
+G = nx.Graph()
+
+# add 10 pilot nodes
+for i in range(1, 11):
+    G.add_node("P" + str(i), node_type="pilot")
+
+# add 10 flight nodes
+for i in range(1, 11):
+    G.add_node("F" + str(i), node_type="flight")
+
+# add edges between pilots and flights
+# assuming that Pilot P1 conflicts with Flight F2, F5, F9
+G.add_edge("P1", "F2")
+G.add_edge("P1", "F5")
+G.add_edge("P1", "F9")
+
+# assuming that Pilot P2 conflicts with Flight F1, F3, F6
+G.add_edge("P2", "F1")
+G.add_edge("P2", "F3")
+G.add_edge("P2", "F6")
+
+# assuming that Pilot P3 conflicts with Flight F2, F4, F7
+G.add_edge("P3", "F2")
+G.add_edge("P3", "F4")
+G.add_edge("P3", "F7")
+
+# assuming that Pilot P4 conflicts with Flight F1, F5, F8
+G.add_edge("P4", "F1")
+G.add_edge("P4", "F5")
+G.add_edge("P4", "F8")
+
+# assuming that Pilot P5 conflicts with Flight F3, F6, F9
+G.add_edge("P5", "F3")
+G.add_edge("P5", "F6")
+G.add_edge("P5", "F9")
+
+# assuming that Pilot P6 conflicts with Flight F4, F7, F10
+G.add_edge("P6", "F4")
+G.add_edge("P6", "F7")
+G.add_edge("P6", "F10")
+
+# assuming that Pilot P7 conflicts with Flight F1, F8, F10
+G.add_edge("P7", "F1")
+G.add_edge("P7", "F8")
+G.add_edge("P7", "F10")
+
+# assuming that Pilot P8 conflicts with Flight F2, F6, F10
+G.add_edge("P8", "F2")
+G.add_edge("P8", "F6")
+G.add_edge("P8", "F10")
+
+# assuming that Pilot P9 conflicts with Flight F3, F7, F9
+G.add_edge("P9", "F3")
+G.add_edge("P9", "F7")
+G.add_edge("P9", "F9")
+
+# assuming that Pilot P10 conflicts with Flight F4, F5, F10
+G.add_edge("P10", "F4")
+G.add_edge("P10", "F5")
+G.add_edge("P10", "F10")
+
+# create a layout for the graph and draw it
+pos = nx.spring_layout(G)
+nx.draw(G, pos, with_labels=True, node_color=["red" if n[1]["node_type"] == "pilot" else "lightblue" for n in G.nodes(data=True)])
+
+# show the graph on screen
+plt.show()
+plt.savefig("BFS_graph.png")
+
 ```
 
 **Visualization**:
 
-![Image goes here](Relative image filename goes here)
+![./BFS_grap.png](./BFS_graph.png)
 
 **Solution code:**
 
-```python
+```
+# check if the graph is bipartite
+is_bipartite = nx.is_bipartite(G)
+if is_bipartite:
+    print("The graph is bipartite.")
+    print("There are enough pilots to fly each flight without conflict.")
+else:
+    print("The graph is not bipartite.")
+     print("More pilots are needed or modifications need to be made to their scheduling.")
 ```
 
 **Output**
 
 ```
+The graph is bipartite.
+There are enough pilots to fly each flight without conflict.
 ```
 
 **Interpretation of Results**:
+Given the set of pilots, flights, and conflicts that construct the input graph, there is a possible pilot-flight
+allocation such that each pilot can fly a flight that does not conflict with their schedule and each flight has a pilot.
 
 # Fourth Problem Title
 
@@ -268,3 +449,4 @@ main()
 ```
 
 **Interpretation of Results**:
+
