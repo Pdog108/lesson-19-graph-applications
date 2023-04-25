@@ -1,22 +1,25 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from typing import Dict, Optional, Set, List
 
-'''
-Function: DFS (Depth-First-Search)
-Parameters: Graph: dictionary representing the graph
-            Start: the starting vertex for the search
-            End: "the goal" vertex for the search
-            Visited: a set containing the vertices that have already been visited
-            Path: a list containing the vertices visited so far
-Returns: None, if the function finishes looping through all the neighbors of the starting vertex without finding a path to the goal vertex
-'''
-def flightsDFS(graph, start, end, visited=None, path=None):
+
+def flights_dfs(graph: Dict[str, List[str]], start: str, end: str, visited: Optional[Set[str]] = None, path: List[str] = None):
+    """
+        Function: DFS (Depth-First-Search)
+        Parameters: Graph: dictionary where the keys represent the vertices in the graph
+                    Start: the starting vertex for the search
+                    End: "the goal" vertex for the search
+                    Visited: an optional set containing the vertices that have already been visited so far during the search
+                    Path: an optional list containing the vertices visited so far, initially set to None
+        Returns: None, if the function finishes looping through all the neighbors of the starting vertex without finding a path to the goal vertex,
+                 else if it exists, this will return the path (as a list of vertices from the starting vertex to the end)
+    """
     # If visited is None, set to an empty list
     if visited is None:
         visited = set()
     # If path is none, then set path to a list containing only the starting vertex
     if path is None:
-        path = [start, 0]
+        path = [start]
     # If the starting vertex is equal to the "goal" vertex, then return the path
     if start == end:
         return path
@@ -28,72 +31,86 @@ def flightsDFS(graph, start, end, visited=None, path=None):
             # Create a new copy of the path list
             new_path = list(path)
             # Add the weight of the edge to the new path list
-            new_path.append(graph[start][vertex])
-            dfs_result = flightsDFS(graph, vertex, end, visited, new_path)
+            new_path.append(vertex)
+            dfs_result = flights_dfs(graph, vertex, end, visited, new_path)
             if dfs_result is not None:
                 return dfs_result
     return None
 
 
-Flights = {
-    "NY": {"NJ": 4, "RI": 7, "NH": 3},
-    "ME": {"NY": 3, "RI": 1, "OH": 7},
-    "NJ": {"NY": 4, "CT": 6, "ME": 6},
-    "RI": {"NY": 7, "CT": 1, "PA": 5, "MS": 16},
-    "CT": {"NJ": 6, "RI": 1, "PA": 10, "VA": 7},
-    "PA": {"RI": 5, "CT": 10, "AK": 55},
-    "FL": {"TX": 14, "OK": 8},
-    "CO": {"OH": 4, "PA": 8, "MS": 5},
-    "TX": {"FL": 14, "OK": 4, "KY": 5, "CO": 8},
-    "OK": {"FL": 8, "TX": 4, "MS": 5},
-    "KY": {"TX": 5, "MN": 4, "LA": 4},
-    "MN": {"KY": 4, "IL": 6, "OH": 8},
-    "IL": {"MN": 6, "OH": 1, "TN": 50},
-    "OH": {"MN": 8, "IL": 1, "CO": 60},
-    "VA": {"CT": 7},
-    "LA": {"KY": 4, "AK": 3, "MS": 5},
-    "MS": {"RI": 16, "OK": 5, "LA": 5, "AK": 1},
-    "AK": {"PA": 55, "TN": 10, "MS": 1},
-    "TN": {"RI": 45, "KY": 5},
-    "NH": {"NY": 3}
+flights = {
+    "NY": ["NJ", "RI", "NH"],
+    "ME": ["NY", "RI", "OH"],
+    "NJ": ["NY", "CT", "ME"],
+    "RI": ["NY", "CT", "PA", "MS"],
+    "CT": ["NJ", "RI", "PA", "VA"],
+    "PA": ["RI", "CT", "AK"],
+    "FL": ["TX", "OK"],
+    "CO": ["OH", "PA", "MS"],
+    "TX": ["FL", "OK", "KY", "CO"],
+    "OK": ["FL", "TX", "MS"],
+    "KY": ["TX", "MN", "LA"],
+    "MN": ["KY", "IL", "OH"],
+    "IL": ["MN", "OH", "TN"],
+    "OH": ["MN", "IL", "CO"],
+    "VA": ["CT"],
+    "LA": ["KY", "AK", "MS"],
+    "MS": ["RI", "OK", "LA", "AK"],
+    "AK": ["PA", "TN", "MS"],
+    "TN": ["RI", "KY"],
+    "NH": ["NY"],
 }
 
-start = "NY"
-end = "NH"
-path = flightsDFS(Flights, start, end)
+FLIGHT_START = "NY"
+FLIGHT_END = "LA"
+flight_path = flights_dfs(flights, FLIGHT_START, FLIGHT_END)
 
 
-if path is not None:
-    print(" -> ".join(str(path)))
+if flight_path is not None:
+    print(" -> ".join(flight_path))
 
-# Create an undirected graph
-G = nx.DiGraph(Flights)
+# Create an directed graph
+G = nx.DiGraph(flights)
 
+# construct list of tuples of edges of the graph of the form (vertex, connected node)
+edges = [(key, value) for key in flights for value in flights[key]]
+
+# all the edges the flight path takes
+path_edges = []
+
+
+for i in range(len(flight_path) - 1):
+    current_flight = flight_path[i]
+    future_flight = flight_path[i + 1]
+    found_pair = list(
+        # Filter the edges kist and keep only the edges where the first element is the current flight and the second element is the future flight
+        # Converts the filtered list to a regular list and takes the first element
+        filter(lambda x: x[0] == current_flight and x[1] == future_flight, edges))[0]
+    # Append the selected edge
+    path_edges.append(found_pair)
+
+
+# Add edges to graph
+G.add_edges_from(edges)
 
 # Draw the Graph
-pos = nx.spring_layout(G, seed = 11, k = 2)
-nx.draw_networkx(G, 
-        pos, 
-        node_color='#0091e6', 
-        node_size=300,
-        font_size=7,
-        font_color='white',
-        edge_color='black',
-        font_weight='bold',
-        width=3,
-        with_labels=True)
+pos = nx.spring_layout(G, seed=11, k=1)
 
-nx.draw_networkx_edge_labels(G, pos, 
-        label_pos=0.5, 
-        font_size=4, 
-        font_color='k', 
-        font_family='sans-serif',
-        font_weight='bold', 
-        horizontalalignment='center', 
-        verticalalignment="bottom",
-        rotate=True, 
-        clip_on=True)
+# Draw the nodes that aren't included in the path
+nx.draw_networkx_nodes(G, pos, nodelist=set(G.nodes) -
+                       set(flight_path), node_color='#1f78b4')
 
+# Draw the edges that aren't included in the path
+nx.draw_networkx_edges(G, pos, edgelist=set(G.edges) -
+                       set(path_edges))
+
+# Draw the nodes in the path with a red color
+nx.draw_networkx_nodes(G, pos, nodelist=flight_path, node_color='r')
+
+# Draw the edges in the path with a red color
+nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='r')
+
+nx.draw_networkx_labels(G, pos)
 
 plt.axis("off")
 plt.savefig("DFS_graph.png")
