@@ -518,7 +518,7 @@ plt.show()
 
 **Visualization**:
 
-![./BFS_graph.png](./BFS_graph.png)
+![./DFS_graph.png](./DFS_graph.png)
 
 **Solution code:**
 
