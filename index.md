@@ -418,35 +418,167 @@ There are enough pilots to fly each flight without conflict.
 Given the set of pilots, flights, and conflicts that construct the input graph, there is a possible pilot-flight
 allocation such that each pilot can fly a flight that does not conflict with their schedule and each flight has a pilot.
 
-# Fourth Problem Title
+# DFS (Depth-First-Search)
 
-**Informal Description**: 
+**Informal Description**:
+Depth-First-Search(DFS) is an algorithm for searching a graph or tree data structure. In this case, the algorithm finds a path between two cities represented as nodes in a graph. The purpose of this code is to visualize a path taken by a flight from one city to another using a DFS Algorithm to find the path and creating a graphical representation of the flight connections.   
 
 > **Formal Description**:
->  * Input:
->  * Output:
+>  * Input: A directed graph of flights terminal consisting of keys representing the cities in the graph and the values and lists of adjacent vertices (destinations that can be reached from each city).
+>  * Output: A list of cities that have been visited along the flight path.
 
-**Graph Problem/Algorithm**: [BFS]
+**Graph Problem/Algorithm**: [DFS]
 
 
 **Setup code**:
 
-```python
+```
+import networkx as nx
+import matplotlib.pyplot as plt
+from typing import Dict, Optional, Set, List
+
+flights = {
+    "NY": ["NJ", "RI", "NH"],
+    "ME": ["NY", "RI", "OH"],
+    "NJ": ["NY", "CT", "ME"],
+    "RI": ["NY", "CT", "PA", "MS"],
+    "CT": ["NJ", "RI", "PA", "VA"],
+    "PA": ["RI", "CT", "AK"],
+    "FL": ["TX", "OK"],
+    "CO": ["OH", "PA", "MS"],
+    "TX": ["FL", "OK", "KY", "CO"],
+    "OK": ["FL", "TX", "MS"],
+    "KY": ["TX", "MN", "LA"],
+    "MN": ["KY", "IL", "OH"],
+    "IL": ["MN", "OH", "TN"],
+    "OH": ["MN", "IL", "CO"],
+    "VA": ["CT"],
+    "LA": ["KY", "AK", "MS"],
+    "MS": ["RI", "OK", "LA", "AK"],
+    "AK": ["PA", "TN", "MS"],
+    "TN": ["RI", "KY"],
+    "NH": ["NY"]
+}
+
+FLIGHT_START = "NY"
+FLIGHT_END = "TN"
+flight_path = flights_dfs(flights, FLIGHT_START, FLIGHT_END)
+
+
+if flight_path is not None:
+    print(" -> ".join(flight_path))
+
+# Create an directed graph
+G = nx.DiGraph(flights)
+
+# construct list of tuples of edges of the graph of the form (vertex, connected node)
+edges = [(key, value) for key in flights for value in flights[key]]
+
+# all the edges the flight path takes
+path_edges = []
+
+
+for i in range(len(flight_path) - 1):
+    current_flight = flight_path[i]
+    future_flight = flight_path[i + 1]
+    found_pair = list(
+        # Filter the edges kist and keep only the edges where the first element is the current flight and the second element is the future flight
+        # Converts the filtered list to a regular list and takes the first element
+        filter(lambda x: x[0] == current_flight and x[1] == future_flight, edges))[0]
+    # Append the selected edge
+    path_edges.append(found_pair)
+
+
+# Add edges to graph
+G.add_edges_from(edges)
+
+# Draw the Graph
+pos = nx.spring_layout(G, seed=11, k=1)
+
+# Draw the nodes that aren't included in the path
+nx.draw_networkx_nodes(G, pos, nodelist=set(G.nodes) -
+                       set(flight_path), node_color='#1f78b4')
+
+# Draw the edges that aren't included in the path
+nx.draw_networkx_edges(G, pos, edgelist=set(G.edges) -
+                       set(path_edges))
+
+# Draw the nodes in the path with a red color
+nx.draw_networkx_nodes(G, pos, nodelist=flight_path, node_color='r')
+
+# Draw the edges in the path with a red color
+nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='r')
+
+nx.draw_networkx_labels(G, pos)
+
+plt.axis("off")
+plt.savefig("DFS_graph.png")
+plt.show()
 ```
 
 **Visualization**:
 
-![Image goes here](Relative image filename goes here)
+![./BFS_graph.png](./BFS_graph.png)
 
 **Solution code:**
 
-```python
+```
+def flights_dfs(graph: Dict[str, List[str]], start: str, end: str, visited: Optional[Set[str]] = None, path: List[str] = None):
+    """
+        Function: DFS (Depth-First-Search)
+        Parameters: Graph: dictionary where the keys represent the vertices in the graph
+                    Start: the starting vertex for the search
+                    End: "the goal" vertex for the search
+                    Visited: an optional set containing the vertices that have already been visited so far during the search
+                    Path: an optional list containing the vertices visited so far, initially set to None
+        Returns: None, if the function finishes looping through all the neighbors of the starting vertex without finding a path to the goal vertex,
+                 else if it exists, this will return the path (as a list of vertices from the starting vertex to the end)
+    """
+    # If visited is None, set to an empty list
+    if visited is None:
+        visited = set()
+    # If path is none, then set path to a list containing only the starting vertex
+    if path is None:
+        path = [start]
+    # If the starting vertex is equal to the "goal" vertex, then return the path
+    if start == end:
+        return path
+    # Add the starting vertex to the set of visited vertices
+    visited.add(start)
+    for vertex in graph[start]:
+        # If the vertex has not been visited
+        if vertex not in visited:
+            # Create a new copy of the path list
+            new_path = list(path)
+            # Add the weight of the edge to the new path list
+            new_path.append(vertex)
+            dfs_result = flights_dfs(graph, vertex, end, visited, new_path)
+            if dfs_result is not None:
+                return dfs_result
+    return None
 ```
 
 **Output**
+The path from New York to Maine: NY -> NJ -> ME
+The path from New York to New Jersey: NY -> NJ
+The path from New York to Rhode Island: NY -> NJ -> CT -> RI 
+The path from New York to Connecticut: NY -> NJ -> CT
+The path from New York to Pennsylvania: NY -> NJ -> CT -> RI -> PA
+The path from New York to Florida: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY -> TX -> FL
+The path from New York to Colorado: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY -> TX -> CO
+The path from New York to Texas: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY -> TX -> FL -> OK -> MS -> LA
+The path from New York to Oklahoma: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY -> TX -> FL -> OK
+The path from New York to Kentucky: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY
+The path from New York to Minnesota: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY -> TX -> CO -> OH -> MN
+The path from New York to Illinois: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY -> TX -> CO -> OH -> MN -> IL
+The path from New York to Ohio: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY -> TX -> CO -> OH
+The path from New York to Virginia: NY -> NJ -> CT -> VA
+The path from New York to Louisiana: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY -> TX -> FL -> OK -> MS -> LA
+The path from New York to Mississippi: NY -> NJ -> CT -> RI -> PA -> AK -> TN -> KY -> TX -> FL -> OK -> MS
+The path from New York to Arkansas: NY -> NJ -> CT -> RI -> PA -> AK
+The path from New York to Tennessee: NY -> NJ -> CT -> RI -> PA -> AK -> TN
+The path from New York to New Hampshire: NY -> NH
 
-```
-```
 
 **Interpretation of Results**:
-
+The graph is represented as a dictionary where each key represents a city node and it's value represents the list of cities that are directly connected to that city. This program prints the flight path for each node in the graph starting from New York, in the format "NY --> next city --> next city" etc.
